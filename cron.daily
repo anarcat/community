@@ -1,0 +1,71 @@
+#! /bin/sh -e
+
+# this script should not exist. there should instead be a borg cron
+# subcommand that reads a config file.
+#
+# that would need to be implemented in borg/archiver.py, with a hook
+# in run() and a def do_cron() that would call do_create() and others.
+
+# features missing from bup-cron:
+# snapshots
+# parity
+# syslog
+# timing
+
+# this is the UUID of the underlying "BOOK" device
+DEVICEID=a9b49f67-cf6d-4e0b-990c-126272f3aefd
+# the device we expect to have the crypted filesystem
+DEVICE=sdc2
+
+# no servicable parts below
+mountpoint=$(findmnt -n -f -o TARGET /dev/disk/by-uuid/$DEVICEID || true)
+REPOSITORY="$mountpoint/borg"
+
+# check for more recent bup in /usr/local/
+PATH=$PATH:/usr/local/bin
+
+# custom tag for manual backups
+tag=$1
+
+# this is how you bootstrap the repo
+# borg init $REPOSITORY # todo: -e keyfile?
+
+if [ ! -d $REPOSITORY ]; then
+  mail -s "backups failed" root <<EOF
+$REPOSITORY not found, possibly that our device is not mounted
+
+i tried:
+
+    findmnt -n -f -o TARGET /dev/disk/by-uuid/$DEVICEID
+
+to find the mountpoint, and failed.
+
+try this to fix the situation:
+
+    sudo pmount $DEVICE
+
+nightly backups failed, you're own you're own buddy.
+
+email fired from $0
+EOF
+else
+  export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
+  borg create --do-not-cross-mountpoints        \
+      --stats                                    \
+      $REPOSITORY::$(hostname)-$(date +%Y-%m-%d)$tag \
+      / /boot /usr /var /home                    \
+      --exclude-caches                           \
+      --exclude "/home/*/.cache"                 \
+      --exclude "*/.Trash-*"                     \
+      --exclude "*/[Cc]ache/*"                   \
+      --exclude "*/.bitcoin/blocks/*"            \
+      --exclude "*.vmdk"                         \
+      --exclude "/tmp/*"                         \
+      --exclude "*/build-area/*"                 \
+      --exclude "/proc/*"                        \
+      --exclude "/dev/*"                         \
+      --exclude "/sys/*"                         \
+      --exclude "/var/cache/*"                   \
+      --exclude "/var/tmp/*"                     \
+      --exclude "/var/log/*"
+fi
