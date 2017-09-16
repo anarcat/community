@@ -1,39 +1,8 @@
 #! /bin/sh -e
 
-# this script will run borg backups with a predefined exclusion list
-# and some options
-#
-# it will also check to see if the external drive is mounted
-# beforehand, to avoid filling up /media with a new backup, filling up
-# the / directory.
-#
-# this script should not exist. there should instead be a borg cron
-# subcommand that reads a config file and "borg cron" would then do
-# the right thing.
-#
-# that would need to be implemented in borg/archiver.py, with a hook
-# in run() and a def do_cron() that would call do_create() and others.
-#
-# unfortunately, upstream has showed hostility towards the idea (see
-# #315) so it remains as a half-assed shell script for now.
-#
-# see also:
-#
-# * https://github.com/borgbackup/borg/issues/315
-# * https://github.com/borgbackup/borg/issues/271
-# * https://github.com/borgbackup/borg/issues/326
-#
-# this was originally written to replace bup, or more precisely, my
-# wrapper named `bup-cron`
-#
-# features missing from bup-cron:
-#
-# * filesystem snapshots
-# * parity blocks
-# * syslog - support still missing from borg, although a logging
-#   config file could be written to send stuff to syslog there's
-#   no --syslog flag
-# * timing information, although --stats does some of that
+# this is designed to be dropped in /etc/cron.daily/borg. see
+# https://github.com/anarcat/community/tree/cron.daily for more
+# information.
 
 # this is the UUID of the underlying "BOOK" device
 DEVICEID=a9b49f67-cf6d-4e0b-990c-126272f3aefd
