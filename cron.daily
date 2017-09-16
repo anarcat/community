@@ -73,7 +73,8 @@ email fired from $0
 EOF
 else
   export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
-  borg create --do-not-cross-mountpoints        \
+  borg create --one-file-system                  \
+      --verbose                                  \
       --stats                                    \
       $REPOSITORY::$(hostname)-$(date +%Y-%m-%d)$tag \
       / /boot /usr /var /home                    \
