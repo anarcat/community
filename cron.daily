@@ -28,12 +28,12 @@
 #
 # features missing from bup-cron:
 #
-# * snapshots
-# * parity
+# * filesystem snapshots
+# * parity blocks
 # * syslog - support still missing from borg, although a logging
 #   config file could be written to send stuff to syslog there's
 #   no --syslog flag
-# * timing
+# * timing information, although --stats does some of that
 
 # this is the UUID of the underlying "BOOK" device
 DEVICEID=a9b49f67-cf6d-4e0b-990c-126272f3aefd
