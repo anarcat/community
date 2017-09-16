@@ -79,6 +79,8 @@ else
       $REPOSITORY::$(hostname)-$(date +%Y-%m-%d)$tag \
       / /boot /usr /var /home                    \
       --exclude-caches                           \
+      --exclude-if-present ".nobackup"           \
+      --keep-tag-files                           \
       --exclude "/home/*/.cache"                 \
       --exclude "*/.Trash-*"                     \
       --exclude "*/[Cc]ache/*"                   \
