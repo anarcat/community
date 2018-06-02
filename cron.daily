@@ -50,7 +50,7 @@ else
       / /boot /usr /var /home                    \
       --exclude-caches                           \
       --exclude-if-present ".nobackup"           \
-      --keep-tag-files                           \
+      --keep-exclude-tags                        \
       --exclude "/home/*/.cache"                 \
       --exclude "*/.Trash-*"                     \
       --exclude "*/[Cc]ache/*"                   \
