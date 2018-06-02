@@ -22,7 +22,7 @@ tag=${1:-auto}
 # this is how you bootstrap the repo
 # borg init $REPOSITORY # todo: -e keyfile?
 
-if [ ! -d $REPOSITORY ]; then
+if [ ! -d "$REPOSITORY" ]; then
   mail -s "backups failed" root <<EOF
 $REPOSITORY not found, possibly that our device is not mounted
 
@@ -45,7 +45,7 @@ else
   borg create --one-file-system                  \
       --verbose                                  \
       --stats                                    \
-      $REPOSITORY::$(hostname)-$tag-$(date +%Y-%m-%d) \
+      "$REPOSITORY"::$(hostname)-$tag-$(date +%Y-%m-%d) \
       / /boot /usr /var /home                    \
       --exclude-caches                           \
       --exclude-if-present ".nobackup"           \
