@@ -42,6 +42,7 @@ email fired from $0
 EOF
 else
   export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
+  export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
   borg create --one-file-system                  \
       --verbose                                  \
       --stats                                    \
