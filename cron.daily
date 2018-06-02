@@ -67,7 +67,7 @@ else
       --exclude "/var/log/*"
   borg create --verbose --stats \
       $REPOSITORY::$(hostname)-logs$1-$(date +%Y-%m-%d) \
-      /var/log/ /home/*/.irssi/irclogs
-  borg prune --verbose --list -d 30 -w 52 -y 10 --prefix "$(hostname)-auto-" .
-  borg prune --verbose --list -d 7 --prefix "$(hostname)-logs-" .
+      /var/log/
+  borg prune --verbose --list -d 30 -w 52 -y 10 --prefix "$(hostname)-auto-" "$REPOSITORY"
+  borg prune --verbose --list -d 7 --prefix "$(hostname)-logs-" "$REPOSITORY"
 fi
